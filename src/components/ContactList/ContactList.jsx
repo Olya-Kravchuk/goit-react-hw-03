@@ -1,5 +1,5 @@
 import React from "react";
-import Contact from "../Contact/Contact";
+import ContactItem from "../ContactItem/ContactItem";
 import css from "./ContactList.module.css";
 
 const ContactList = ({ contactDatas }) => {
@@ -7,8 +7,8 @@ const ContactList = ({ contactDatas }) => {
     <ul className={css.personList}>
       {contactDatas.map((contactData) => {
         return (
-          <li key={contactData.id}>
-            <Contact name={contactData.name} number={contactData.number} />
+          <li className={css.personItem} key={contactData.id}>
+            <ContactItem name={contactData.name} number={contactData.number} />
           </li>
         );
       })}
