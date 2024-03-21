@@ -1,10 +1,21 @@
 import React from "react";
 import css from "./ContactForm.module.css";
 
-const ContactForm = () => {
+const ContactForm = ({ onAdd }) => {
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const contactName = event.currentTarget.elements.name.value;
+    const contactPhone = event.currentTarget.elements.phone.value;
+    onAdd({
+      id: Date.now(),
+      name: contactName,
+      number: contactPhone,
+    });
+    event.target.reset();
+  };
   return (
     <div>
-      <form className={css.contactForm}>
+      <form className={css.contactForm} onSubmit={handleSubmit}>
         <div className={css.formGroup}>
           <label htmlFor="name">Name:</label>
           <input
