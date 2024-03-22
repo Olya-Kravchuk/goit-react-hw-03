@@ -1,45 +1,105 @@
 import React from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 import css from "./ContactForm.module.css";
 
+const FeedbackSchema = Yup.object().shape({
+  name: Yup.string()
+    .min(3, "Your name is too Short!")
+    .max(50, "Your name is too Long!")
+    .required("Name is required"),
+  phone: Yup.string()
+    .min(3, "Your number is too Short!")
+    .max(50, "Your number is too Long!")
+    .required("Phone is required"),
+});
+
+const FORM_INITIAL_VALUES = {
+  id: Date.now(),
+  name: "",
+  phone: "",
+};
+
 const ContactForm = ({ onAdd }) => {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const contactName = event.currentTarget.elements.name.value;
-    const contactPhone = event.currentTarget.elements.phone.value;
+  const handleSubmit = (values, actions) => {
     onAdd({
       id: Date.now(),
-      name: contactName,
-      number: contactPhone,
+      name: values.name,
+      number: values.phone,
     });
-    event.target.reset();
+    actions.resetForm();
   };
+
   return (
-    <div>
-      <form className={css.contactForm} onSubmit={handleSubmit}>
+    <Formik
+      initialValues={FORM_INITIAL_VALUES}
+      validationSchema={FeedbackSchema}
+      onSubmit={handleSubmit}
+    >
+      <Form className={css.contactForm}>
         <div className={css.formGroup}>
           <label htmlFor="name">Name:</label>
-          <input
+          <Field
             type="text"
             id="name"
             name="name"
             placeholder="Enter your name"
-            required
           />
+          <ErrorMessage component="p" name="name" />
         </div>
         <div className={css.formGroup}>
           <label htmlFor="phone">Number:</label>
-          <input
+          <Field
             type="tel"
             id="phone"
             name="phone"
             placeholder="Enter your phone number"
-            required
           />
+          <ErrorMessage component="p" name="phone" />
         </div>
         <button type="submit">Add contact</button>
-      </form>
-    </div>
+      </Form>
+    </Formik>
   );
 };
+
+// const ContactForm = ({ onAdd }) => {
+//   const handleSubmit = (event) => {
+//     event.preventDefault();
+//     const contactName = event.currentTarget.elements.name.value;
+//     const contactPhone = event.currentTarget.elements.phone.value;
+//     onAdd({
+//       id: Date.now(),
+//       name: contactName,
+//       number: contactPhone,
+//     });
+//     event.target.reset();
+//   };
+//   return (
+//       <form className={css.contactForm} onSubmit={handleSubmit}>
+//         <div className={css.formGroup}>
+//           <label htmlFor="name">Name:</label>
+//           <input
+//             type="text"
+//             id="name"
+//             name="name"
+//             placeholder="Enter your name"
+//             required
+//           />
+//         </div>
+//         <div className={css.formGroup}>
+//           <label htmlFor="phone">Number:</label>
+//           <input
+//             type="tel"
+//             id="phone"
+//             name="phone"
+//             placeholder="Enter your phone number"
+//             required
+//           />
+//         </div>
+//         <button type="submit">Add contact</button>
+//       </form>
+//   );
+// };
 
 export default ContactForm;

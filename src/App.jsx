@@ -1,29 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import ContactForm from "./components/ContactForm/ContactForm";
 import SearchBox from "./components/SearchBox/SearchBox";
 import ContactList from "./components/ContactList/ContactList";
-import contactDatas from "./contactDatas.json";
 
 function App() {
-  const [contacts, setContacts] = useState(contactDatas);
+  const [contactDatas, setContactDatas] = useState(() => {
+    const savedContacts = window.localStorage.getItem("saved-contacts");
+    if (savedContacts) {
+      return JSON.parse(savedContacts);
+    }
+    return [];
+  });
   const [filter, setFilter] = useState("");
 
   const addContact = (newContact) => {
-    setContacts((prevContacts) => {
+    setContactDatas((prevContacts) => {
       return [...prevContacts, newContact];
     });
   };
 
   const deleteContact = (contactId) => {
-    setContacts((prevContacts) => {
-      return prevContacts.filter((contact) => contact.id !== contactId);
+    setContactDatas((prevContacts) => {
+      return prevContacts.filter((contactData) => contactData.id !== contactId);
     });
   };
 
-  const visibleContacts = contacts.filter((contact) =>
-    contact.name.toLowerCase().includes(filter.toLowerCase())
+  const visibleContacts = contactDatas.filter((contactData) =>
+    contactData.name.toLowerCase().includes(filter.toLowerCase())
   );
+
+  useEffect(() => {
+    window.localStorage.setItem("saved-contacts", JSON.stringify(contactDatas));
+  }, [contactDatas]);
   return (
     <div>
       <h1>Phonebook</h1>
