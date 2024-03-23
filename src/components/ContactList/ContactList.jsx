@@ -1,5 +1,5 @@
 import React from "react";
-import ContactItem from "../ContactItem/ContactItem";
+import Contact from "../Contact/Contact";
 import css from "./ContactList.module.css";
 
 const ContactList = ({ contactDatas, onDelete }) => {
@@ -8,7 +8,7 @@ const ContactList = ({ contactDatas, onDelete }) => {
       {contactDatas.map((contactData) => {
         return (
           <li className={css.personItem} key={contactData.id}>
-            <ContactItem
+            <Contact
               name={contactData.name}
               number={contactData.number}
               id={contactData.id}

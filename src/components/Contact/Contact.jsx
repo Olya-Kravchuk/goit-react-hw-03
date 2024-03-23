@@ -1,8 +1,8 @@
 import React from "react";
 import { FaUser, FaPhone } from "react-icons/fa";
-import css from "./ContactItem.module.css";
+import css from "./Contact.module.css";
 
-const ContactItem = ({ id, name, number, onDelete }) => {
+const Contact = ({ id, name, number, onDelete }) => {
   return (
     <>
       <div className={css.personData}>
@@ -20,4 +20,4 @@ const ContactItem = ({ id, name, number, onDelete }) => {
   );
 };
 
-export default ContactItem;
+export default Contact;
